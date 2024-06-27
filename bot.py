@@ -4,19 +4,20 @@ import settings
 from telegram import ReplyKeyboardMarkup
 
 
-key_1 = KeyboardButton('Уход')
-key_2 = KeyboardButton('Питание')
-key_3 = KeyboardButton('Описание характера')
-key_4 = KeyboardButton('Все о породах')
-key_5 = KeyboardButton('Какой породы кот?')
-key_6 = KeyboardButton('Что может этот бот?')
-keyboard_layout = [[key_1, key_2, key_3, key_4, key_5, key_2]]
-main = ReplyKeyboardMarkup(keyboard_layout, resize_keyboard=True)
+reply_keyboard = [
+    ['Уход'],
+    ['Питание'],
+    ['Описание характера'],
+    ['Все о продах'],
+    ['Какой породы кот?'],
+    ['Что может этот бот?'],
+]
+markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 
 def greet_user(update, context):
     update.message.reply_text('Привет, я сделан для того, чтобы помогать тебе в уходе за твоим любимцем, я готов,'
-                              ' задавай вопрос!😺', reply_markup=main)
+                              ' задавай вопрос!😺', reply_markup=markup)
 
 
 def get_care(update, context):
@@ -72,12 +73,17 @@ def main():
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("care", get_care))
-    dp.add_handler(MessageHandler(Filters.regex('^(Уход)$'), get_care))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Уход)$'), get_care))
     dp.add_handler(CommandHandler("nutrit", get_nutrition))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Питание)$'), get_nutrition))
     dp.add_handler(CommandHandler("descrip", character_description))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Описание характера)$'), character_description))
     dp.add_handler(CommandHandler("breed", get_breed))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Все о породах)$'), get_breed))
     dp.add_handler(CommandHandler("wht_breed", get_what_breed_of_cat))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Какой породы кот?)$'), get_what_breed_of_cat))
     dp.add_handler(CommandHandler("help", get_help))
+    dp.add_handler(MessageHandler(Filters.regex(r'^(Что может этот бот?)$'), get_help))
 
 
 
